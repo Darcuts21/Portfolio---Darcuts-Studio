@@ -26,25 +26,29 @@
   <h1 class="hero">Une idée en tête ? <span class="underline">Parlons-en.</span></h1>
   <p class="lead">Pas besoin d'avoir un projet tout ficelé. Un message suffit pour démarrer la conversation.</p>
 
-  <form class="contact-form" onsubmit="return false;">
+  <form class="contact-form" action="https://formsubmit.co/darcuts.ldt@gmail.com" method="POST">
+    <input type="hidden" name="_subject" value="Nouveau message - Darcuts Studio">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_next" value="merci.html">
+
     <div class="field">
       <label for="name">Ton nom</label>
-      <input type="text" id="name" name="name" placeholder="Comment on t'appelle ?">
+      <input type="text" id="name" name="name" placeholder="Comment on t'appelle ?" required>
     </div>
     <div class="field">
       <label for="email">Ton email</label>
-      <input type="email" id="email" name="email" placeholder="toi@exemple.fr">
+      <input type="email" id="email" name="email" placeholder="toi@exemple.fr" required>
     </div>
     <div class="field">
       <label for="message">Ton message</label>
-      <textarea id="message" name="message" placeholder="Raconte-nous ton projet, même en vrac."></textarea>
+      <textarea id="message" name="message" placeholder="Raconte-nous ton projet, même en vrac." required></textarea>
     </div>
     <button class="btn btn-primary" type="submit" style="align-self: flex-start;">Envoyer le message</button>
   </form>
 
   <footer class="site">
     <p>Darcuts Studio · projet passion, pas d'agence</p>
-    <p>Angers, France</p>
+    <p>Angers, France <span class="admin-dot" onclick="window.location.href='admin.html'" title=""> · </span></p>
   </footer>
 </div>
 
