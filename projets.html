@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projets - Darcuts Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site">
+    <div class="brand-row">
+      <div class="brand">Darcuts Studio</div>
+      <time class="brand-date" datetime="2026-10-01">1er octobre 2026</time>
+    </div>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="projets.html" class="active">Projets</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h1 class="hero">Ce qu'on a <span class="underline">bricolé</span> jusqu'ici.</h1>
+  <p class="lead">Une sélection de ce qui tourne en ce moment ou de ce qu'on a livré. La liste s'allonge au fil de nos idées.</p>
+
+  <div class="section-label">Tous les projets</div>
+
+  <div class="card-grid" id="all-projects"></div>
+
+  <footer class="site">
+    <p>Darcuts Studio · projet passion, pas d'agence</p>
+    <p>Angers, France <span class="admin-dot" onclick="window.location.href='admin.html'" title=""> · </span></p>
+  </footer>
+</div>
+
+<script src="projects-data.js"></script>
+<script>
+  const all = loadProjects();
+  document.getElementById('all-projects').innerHTML = all.map(renderCard).join('');
+</script>
+
+</body>
+</html>
