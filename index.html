@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darcuts Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site">
+    <div class="brand-row">
+      <div class="brand">Darcuts Studio</div>
+      <time class="brand-date" datetime="2026-10-01">1er octobre 2026</time>
+    </div>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="projets.html">Projets</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="pinned-note">
+    Bienvenue chez Darcuts Studio, un studio amateur de développement web et de création de projets. Notre point de départ, c'est la tech — mais on peut aussi vous filer un coup de main sur d'autres types de projets.
+  </div>
+
+  <h1 class="hero">On construit des <span class="underline">projets utiles</span>, avec ce qu'on a sous la main.</h1>
+  <p class="lead">
+    Notre objectif est simple : vous accompagner dans vos projets, ou en créer de nouveaux qui servent vraiment à quelque chose. On ne va pas se mentir, on n'est pas des professionnels et on ne peut rien vous garantir de parfait — mais on met tout ce qu'on a dans chaque projet. Tout part de notre passion pour la tech et le développement web, et de l'idée qu'un peu de créativité peut créer des trucs uniques. Une idée en tête ? Parlons-en.
+  </p>
+
+  <div class="btn-row">
+    <button class="btn btn-primary" type="button" onclick="window.location.href='projets.html'">Voir nos projets</button>
+    <button class="btn btn-ghost" type="button" onclick="window.location.href='contact.html'">Nous contacter</button>
+  </div>
+
+  <div class="section-label">Dernier projet en date</div>
+
+  <div class="card-grid" id="latest-project"></div>
+
+  <footer class="site">
+    <p>Darcuts Studio · projet passion, pas d'agence</p>
+    <p>Angers, France <span class="admin-dot" onclick="window.location.href='admin.html'" title=""> · </span></p>
+  </footer>
+</div>
+
+<script src="projects-data.js"></script>
+<script>
+  const latest = loadProjects()[0];
+  if (latest) {
+    document.getElementById('latest-project').innerHTML = renderCard(latest);
+  }
+</script>
+
+</body>
+</html>
