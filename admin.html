@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Darcuts Studio</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .lock-screen {
+      max-width: 360px;
+      margin: 120px auto;
+      text-align: center;
+    }
+    .lock-screen input {
+      width: 100%;
+      background: var(--board-panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+      color: var(--chalk);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      text-align: center;
+      margin: 18px 0;
+      letter-spacing: 0.2em;
+    }
+    .lock-screen input:focus { outline: none; border-color: var(--marker-yellow); }
+    .lock-error { color: var(--marker-coral); font-size: 13px; font-family: 'JetBrains Mono', monospace; min-height: 18px; }
+
+    #admin-panel { display: none; }
+
+    .admin-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .admin-row .field { flex: 1; }
+    .field select {
+      width: 100%;
+      background: var(--board-panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px 14px;
+      color: var(--chalk);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14.5px;
+    }
+
+    .project-list-admin {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 30px 0 60px;
+    }
+    .project-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--board-panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px 18px;
+    }
+    .project-row-title { font-weight: 600; }
+    .project-row-actions { display: flex; gap: 8px; }
+    .mini-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 5px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--chalk-dim);
+      cursor: pointer;
+    }
+    .mini-btn:hover { color: var(--chalk); border-color: var(--marker-yellow); }
+    .mini-btn.danger:hover { color: var(--marker-coral); border-color: var(--marker-coral); }
+
+    #export-box {
+      width: 100%;
+      min-height: 220px;
+      background: var(--board-panel);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--chalk);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 16px;
+      margin-top: 14px;
+      display: none;
+    }
+
+    .warn-box {
+      background: rgba(226, 105, 79, 0.08);
+      border: 1px solid rgba(226, 105, 79, 0.3);
+      border-radius: 6px;
+      padding: 16px 18px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--chalk-dim);
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- Écran de verrouillage -->
+  <div class="lock-screen" id="lock-screen">
+    <div class="brand" style="font-size: 32px;">Darcuts Studio</div>
+    <p style="color: var(--chalk-dim); font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-top: 10px;">accès admin</p>
+    <input type="password" id="passcode" placeholder="code d'accès" autocomplete="off">
+    <button class="btn btn-primary" onclick="checkPasscode()">Entrer</button>
+    <p class="lock-error" id="lock-error"></p>
+  </div>
+
+  <!-- Panneau admin -->
+  <div id="admin-panel">
+    <header class="site" style="padding-top: 40px;">
+      <div class="brand-row">
+        <div class="brand" style="font-size: 32px;">Darcuts Studio — Admin</div>
+      </div>
+      <nav class="site-nav">
+        <ul>
+          <li><a href="index.html">← Retour au site</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="warn-box">
+      ⚠️ Ceci est un panneau de gestion simple, pas un vrai système sécurisé (le site est 100% statique, sans serveur). Le code d'accès décourage juste les visiteurs curieux — n'importe qui inspectant le code source peut le retrouver. Tes modifications sont sauvegardées uniquement dans <strong>ce navigateur</strong>. Pour qu'elles apparaissent partout (une fois le site republié), utilise le bouton "Exporter le code" en bas et colle le résultat dans <code>projects-data.js</code>.
+    </div>
+
+    <div class="section-label">Ajouter un projet</div>
+
+    <form class="contact-form" style="max-width: 640px;" onsubmit="addProject(event)">
+      <div class="field">
+        <label>Titre</label>
+        <input type="text" id="new-title" required>
+      </div>
+      <div class="admin-row">
+        <div class="field">
+          <label>Statut</label>
+          <select id="new-status">
+            <option value="en-cours">En cours</option>
+            <option value="termine">Terminé</option>
+            <option value="pause">En pause</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tags (séparés par une virgule)</label>
+          <input type="text" id="new-tags" placeholder="JavaScript, Web app">
+        </div>
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="new-desc" required></textarea>
+      </div>
+      <button class="btn btn-primary" type="submit" style="align-self: flex-start;">Ajouter le projet</button>
+    </form>
+
+    <div class="section-label" style="margin-top: 50px;">Projets actuels</div>
+    <div class="project-list-admin" id="project-list-admin"></div>
+
+    <button class="btn btn-ghost" onclick="exportCode()">Exporter le code</button>
+    <textarea id="export-box" readonly></textarea>
+
+  </div>
+</div>
+
+<script src="projects-data.js"></script>
+<script>
+  // Code d'accès très simple — change-le ici. Ce n'est PAS une vraie sécurité,
+  // juste un frein pour les visiteurs qui tombent sur cette page par hasard.
+  const PASSCODE = "darcuts2026";
+
+  function checkPasscode() {
+    const val = document.getElementById('passcode').value;
+    if (val === PASSCODE) {
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      renderAdminList();
+    } else {
+      document.getElementById('lock-error').textContent = "Code incorrect.";
+    }
+  }
+
+  document.getElementById('passcode').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkPasscode();
+  });
+
+  let projects = loadProjects();
+
+  function renderAdminList() {
+    const list = document.getElementById('project-list-admin');
+    if (projects.length === 0) {
+      list.innerHTML = `<p style="color: var(--chalk-dim); font-size: 14px;">Aucun projet pour l'instant.</p>`;
+      return;
+    }
+    list.innerHTML = projects.map((p, i) => `
+      <div class="project-row">
+        <div>
+          <div class="project-row-title">${p.title}</div>
+          <div style="font-size:12px; color: var(--chalk-dim); font-family:'JetBrains Mono', monospace;">${p.statusLabel}</div>
+        </div>
+        <div class="project-row-actions">
+          <button class="mini-btn" onclick="moveProject(${i}, -1)">↑</button>
+          <button class="mini-btn" onclick="moveProject(${i}, 1)">↓</button>
+          <button class="mini-btn danger" onclick="deleteProject(${i})">Supprimer</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function addProject(e) {
+    e.preventDefault();
+    const title = document.getElementById('new-title').value.trim();
+    const desc = document.getElementById('new-desc').value.trim();
+    const status = document.getElementById('new-status').value;
+    const statusLabels = { 'en-cours': 'en cours', 'termine': 'terminé', 'pause': 'en pause' };
+    const tags = document.getElementById('new-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+
+    projects.unshift({
+      id: title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      title, desc, status,
+      statusLabel: statusLabels[status],
+      tags
+    });
+
+    saveProjects(projects);
+    renderAdminList();
+    e.target.reset();
+  }
+
+  function deleteProject(index) {
+    if (!confirm(`Supprimer "${projects[index].title}" ?`)) return;
+    projects.splice(index, 1);
+    saveProjects(projects);
+    renderAdminList();
+  }
+
+  function moveProject(index, dir) {
+    const target = index + dir;
+    if (target < 0 || target >= projects.length) return;
+    [projects[index], projects[target]] = [projects[target], projects[index]];
+    saveProjects(projects);
+    renderAdminList();
+  }
+
+  function exportCode() {
+    const box = document.getElementById('export-box');
+    box.style.display = 'block';
+    box.value = "const DEFAULT_PROJECTS = " + JSON.stringify(projects, null, 2) + ";";
+    box.select();
+  }
+</script>
+
+</body>
+</html>
