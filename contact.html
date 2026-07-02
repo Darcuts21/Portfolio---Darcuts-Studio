@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact - Darcuts Studio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site">
+    <div class="brand-row">
+      <div class="brand">Darcuts Studio</div>
+      <time class="brand-date" datetime="2026-10-01">1er octobre 2026</time>
+    </div>
+    <nav class="site-nav">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="projets.html">Projets</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <h1 class="hero">Une idée en tête ? <span class="underline">Parlons-en.</span></h1>
+  <p class="lead">Pas besoin d'avoir un projet tout ficelé. Un message suffit pour démarrer la conversation.</p>
+
+  <form class="contact-form" onsubmit="return false;">
+    <div class="field">
+      <label for="name">Ton nom</label>
+      <input type="text" id="name" name="name" placeholder="Comment on t'appelle ?">
+    </div>
+    <div class="field">
+      <label for="email">Ton email</label>
+      <input type="email" id="email" name="email" placeholder="toi@exemple.fr">
+    </div>
+    <div class="field">
+      <label for="message">Ton message</label>
+      <textarea id="message" name="message" placeholder="Raconte-nous ton projet, même en vrac."></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit" style="align-self: flex-start;">Envoyer le message</button>
+  </form>
+
+  <footer class="site">
+    <p>Darcuts Studio · projet passion, pas d'agence</p>
+    <p>Angers, France</p>
+  </footer>
+</div>
+
+</body>
+</html>
